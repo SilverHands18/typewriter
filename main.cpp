@@ -38,6 +38,9 @@ UImanager::Button savefeild;
 
 UImanager::Button openfeild;
 
+UImanager::Button SizeFeild;
+
+UImanager::Button SizeButton;
 
 UImanager::panel DebuggerPanel;
 
@@ -52,7 +55,17 @@ int Sbegin,SEnd;
 TTF_Font* font;
 
 
-
+void SizeFont()
+{
+	char* ptr;
+	int size = (int)std::strtol(buttons[7].message.c_str(), &ptr, 10);
+	if (*ptr != 0)
+	{
+		DebuggerPanel.text = "Failed to Scale font MAKE SURE THERE ARE NO NUMBER CHARACTERS IN THE FEILD";
+			return;
+	}
+		textstyle.size = size;
+}
 
 void SaveText()
 {
@@ -83,7 +96,7 @@ void OpenText()
 void OpenFont()
 {
 
-	std::ifstream myfile(FONTTYPESPATH + buttons[3].message + exten);
+	std::ifstream myfile((FONTTYPESPATH + buttons[3].message + exten).c_str());
 	if (!myfile.good())
 	{
 		textstyle.style = UIfontPath;
@@ -113,11 +126,12 @@ void EndText()
 }
 
 std::map<std::string, std::function<void()>>  funcMap =
-{	{ "Save", SaveText},
+{ { "Save", SaveText},
 	{ "Open", OpenText},
 	{"StartText",StartText},
 	{"EndText",EndText},
-	{"OpenFont",OpenFont}
+	{"OpenFont",OpenFont},
+	{"SizeFont",SizeFont}
 };
 
 void DrawUIText(const char* msg,int x,int y,int wrap,UImanager::FontStyle* fntstyle,SDL_Renderer* ren) {
@@ -128,6 +142,7 @@ void DrawUIText(const char* msg,int x,int y,int wrap,UImanager::FontStyle* fntst
 	SDL_Rect rect;
 	if (!font)
 	{
+		font = font = TTF_OpenFont(UIstyle.style,UIstyle.size);
 		DebuggerPanel.text = "Failed to read font will reset to the default font";
 	}
 	surf = TTF_RenderText_Blended_Wrapped(font, msg, color,wrap);
@@ -373,6 +388,33 @@ int main(int argc, char** argv) {
 	openfeild.action = "StartText";
 	openfeild.failAction;
 
+	SizeButton.r.x = 512;
+	SizeButton.r.y = 24;
+	SizeButton.r.w = 96;
+	SizeButton.r.h = 34;
+	SizeButton.RegularCol = &deselected;
+	SizeButton.ActiveCol = &Active;
+	SizeButton.PressedCol = &Pressed;
+	SizeButton.message = "Size";
+	SizeButton.action = "SizeFont";
+
+
+	SizeFeild.r.x = 512;
+	SizeFeild.r.y = 64;
+	SizeFeild.r.w = 96;
+	SizeFeild.r.h = 34;
+	SizeFeild.RegularCol = &White;
+	SizeFeild.ActiveCol = &White;
+	SizeFeild.PressedCol = &White;
+	SizeFeild.message = "14";
+	SizeFeild.action = "StartText";
+	SizeFeild.failAction;
+
+
+
+
+
+
 	DebuggerPanel.col = &Active;
 	DebuggerPanel.Fstyle = &PanelStyle;
 	DebuggerPanel.r = {0 ,976,1024,48 };
@@ -384,7 +426,8 @@ int main(int argc, char** argv) {
 	buttons.push_back(FontButton);
 	buttons.push_back(savefeild);
 	buttons.push_back(openfeild);
-
+	buttons.push_back(SizeFeild);
+	buttons.push_back(SizeButton);
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		printf("Error: SDL failed to initialize\nSDL Error: '%s'\n", SDL_GetError());
 		return 1;
