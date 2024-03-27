@@ -1,0 +1,14 @@
+﻿  main.cpp
+  UImanager.cpp
+main.obj : error LNK2001: unresolved external symbol SDL_GetWindowSurface
+main.obj : error LNK2001: unresolved external symbol SDL_Init
+main.obj : error LNK2001: unresolved external symbol SDL_GetError
+main.obj : error LNK2001: unresolved external symbol SDL_UnlockSurface
+main.obj : error LNK2001: unresolved external symbol SDL_memset
+main.obj : error LNK2001: unresolved external symbol SDL_GetMouseState
+main.obj : error LNK2001: unresolved external symbol SDL_LockSurface
+main.obj : error LNK2001: unresolved external symbol SDL_PollEvent
+main.obj : error LNK2001: unresolved external symbol SDL_CreateWindow
+main.obj : error LNK2001: unresolved external symbol SDL_UpdateWindowSurface
+MSVCRT.lib(exe_main.obj) : error LNK2001: unresolved external symbol main
+C:\Users\ALIENWARE\source\repos\WritingProgram\x64\Release\WritingProgram.exe : fatal error LNK1120: 11 unresolved externals
