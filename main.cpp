@@ -42,6 +42,10 @@ UImanager::Button SizeFeild;
 
 UImanager::Button SizeButton;
 
+UImanager::Button R, G, B , ApplyColor;
+
+
+
 UImanager::panel DebuggerPanel;
 
 
@@ -53,6 +57,28 @@ int Sbegin,SEnd;
 
 
 TTF_Font* font;
+
+
+
+void ApplyRGB()
+{
+	char* p;
+	char* p2;
+	char* p3;
+	int r = (int)std::strtol(buttons[9].message.c_str(), &p, 10);
+	int g = (int)std::strtol(buttons[10].message.c_str(), &p2, 10);
+	int b = (int)std::strtol(buttons[11].message.c_str(), &p3, 10);
+	if (*p != 0 || *p2 != 0|| *p3 != 0)
+	{
+		DebuggerPanel.text = "Failed to Apply Color font MAKE SURE THERE ARE NO NUMBER CHARACTERS IN THE FEILD";
+		return;
+	}
+	textstyle.color.r = r;
+	textstyle.color.g = g;
+	textstyle.color.b = b;
+}
+
+
 
 
 void SizeFont()
@@ -70,10 +96,18 @@ void SizeFont()
 void SaveText()
 {
 	std::ofstream myfile;
+	std::ofstream mystyle;
+
 	myfile.open(buttons[5].message.c_str());
 
 	myfile << buttons[2].message;
 	myfile.close();
+
+	if (buttons[5].message[buttons[5].message.length() - 1] == 't' && buttons[5].message[buttons[5].message.length() - 1] == 't' && buttons[5].message[buttons[5].message.length() - 1] == 't' && buttons[5].message[buttons[5].message.length() - 1] == 't')
+	{
+
+	}
+
 }
 
 void OpenText()
@@ -131,7 +165,8 @@ std::map<std::string, std::function<void()>>  funcMap =
 	{"StartText",StartText},
 	{"EndText",EndText},
 	{"OpenFont",OpenFont},
-	{"SizeFont",SizeFont}
+	{"SizeFont",SizeFont},
+	{"ApplyColor",ApplyRGB}
 };
 
 void DrawUIText(const char* msg,int x,int y,int wrap,UImanager::FontStyle* fntstyle,SDL_Renderer* ren) {
@@ -411,8 +446,59 @@ int main(int argc, char** argv) {
 	SizeFeild.failAction;
 
 
+	R.r.x = 642;
+	R.r.y = 64;
+	R.r.w = 64;
+	R.r.h = 34;
+	R.RegularCol = &White;
+	R.ActiveCol = &White;
+	R.PressedCol = &White;
+	R.message = "14";
+	R.action = "StartText";
+	R.failAction;
 
 
+	R.r.x = 642;
+	R.r.y = 64;
+	R.r.w = 64;
+	R.r.h = 34;
+	R.RegularCol = &White;
+	R.ActiveCol = &White;
+	R.PressedCol = &White;
+	R.message = "0";
+	R.action = "StartText";
+
+
+	G.r.x = 724;
+	G.r.y = 64;
+	G.r.w = 64;
+	G.r.h = 34;
+	G.RegularCol = &White;
+	G.ActiveCol = &White;
+	G.PressedCol = &White;
+	G.message = "0";
+	G.action = "StartText";
+
+
+	B.r.x = 806;
+	B.r.y = 64;
+	B.r.w = 64;
+	B.r.h = 34;
+	B.RegularCol = &White;
+	B.ActiveCol = &White;
+	B.PressedCol = &White;
+	B.message = "0";
+	B.action = "StartText";
+
+	ApplyColor.r.x = 682;
+	ApplyColor.r.y = 24;
+	ApplyColor.r.w = 142;
+	ApplyColor.r.h = 34;
+	ApplyColor.RegularCol = &deselected;
+	ApplyColor.ActiveCol = &Active;
+	ApplyColor.PressedCol = &Pressed;
+	ApplyColor.message = "Apply Color";
+	ApplyColor.action = "ApplyColor";
 
 
 	DebuggerPanel.col = &Active;
@@ -428,6 +514,12 @@ int main(int argc, char** argv) {
 	buttons.push_back(openfeild);
 	buttons.push_back(SizeFeild);
 	buttons.push_back(SizeButton);
+	buttons.push_back(R);
+	buttons.push_back(G);
+	buttons.push_back(B);
+	buttons.push_back(ApplyColor);
+
+
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		printf("Error: SDL failed to initialize\nSDL Error: '%s'\n", SDL_GetError());
 		return 1;
@@ -464,7 +556,7 @@ int main(int argc, char** argv) {
 
 	StartText();
 	
-	//SDL_Init(SDL_INIT_EVERYTHING);
+
 	while (running) {
 		SDL_Event event;
 
@@ -502,7 +594,7 @@ int main(int argc, char** argv) {
 			SDL_RenderPresent(renderer);
 		}
 
-		//SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+
 
 	}
 	
